@@ -20,6 +20,9 @@ function App() {
   }, []);
 
   const remove = (id) => {
+    fetch(`http://localhost:3000/themes/${id}`, {
+      method: "DELETE",
+    });
     setBases((value) => value.filter((theme) => theme.id !== id));
   };
   return (
