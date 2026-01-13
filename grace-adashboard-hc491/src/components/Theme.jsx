@@ -1,16 +1,13 @@
 import { Skills } from "./Skills";
 
-export const Theme = ( {bases,onDelete} ) => {
+export const Theme = ({ bases, onDelete }) => {
   return (
     <>
-      {bases.map((theme)=>(
+      {bases.map((theme) => (
         <div key={theme.id}>
           <h2>{theme.name}</h2>
+          <button onClick={() => onDelete(theme.id)}>Effacer</button>
           <Skills theme={theme} />
-
-         <button onClick={()=>onDelete(theme.id)}>
-            Effacer
-            </button>
         </div>
       ))}
     </>
