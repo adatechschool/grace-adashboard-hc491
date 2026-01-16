@@ -7,6 +7,7 @@ import { Theme } from "./components/Theme";
 
 function App() {
   const [bases, setBases] = useState([]);
+  const [showForm, setShowForm]= useState(false)
 
   useEffect(() => {
     async function getBases() {
@@ -19,14 +20,18 @@ function App() {
     getBases();
   }, []);
 
-  const remove = (id) => {
-    fetch(`http://localhost:3000/themes/${id}`, {
+  const remove = async(id) => {
+   await fetch(`http://localhost:3000/themes/${id}`, {
       method: "DELETE",
     });
     setBases((value) => value.filter((theme) => theme.id !== id));
   };
   return (
     <>
+    <div className="header">
+      <button className="add-theme-btn"
+      onClick={()=> setShowForm(!showForm)}>Ajouter un thème</button>
+    </div>
       <Theme bases={bases} onDelete={remove} />
     </>
   );

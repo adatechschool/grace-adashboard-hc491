@@ -7,22 +7,21 @@ export const Skills = ({ theme }) => {
     if (validation === "KO") return "Pas acquis";
     if (validation === "PROGRESS") return "En cours";
     if (validation === "OK") return "Acquis";
-    return "";
   };
 
-  const changeStatus = (index) => {
+  const changeStatus =  async (index, newStatus) => {
+    //mise à jour UI
     setSkills((prevSkills) => {
       const newSkills = [...prevSkills];
-
-      if (newSkills[index].validation === "OK") {
-        newSkills[index].validation = "PROGRESS";
-      } else if (newSkills[index].validation === "PROGRESS") {
-        newSkills[index].validation = "KO";
-      } else {
-        newSkills[index].validation = "OK";
-      }
+      newSkills[index] = { ...newSkills[index], validation: newStatus };
       return newSkills;
     });
+
+    //Appel API
+     await fetch(
+      `http://localhost:3000/themes/${theme.id}/skills/${index}/${newStatus}`,
+      { method: "PUT" }
+    );
   };
 
   return (
@@ -30,9 +29,15 @@ export const Skills = ({ theme }) => {
       {skills.map((skill, index) => (
         <li key={index}>
           {skill.label}
-          <button onClick={() => changeStatus(index)}>
-            {getStatus(skill.validation)}
-          </button>
+
+          <select
+            value={skill.validation}
+            onChange={(e) => changeStatus(index, e.target.value)}
+          >
+            <option value="KO">Pas acquis</option>
+            <option value="PROGRESS">En cours</option>
+            <option value="OK">Acquis</option>
+          </select>
         </li>
       ))}
     </ul>
